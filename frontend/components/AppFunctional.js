@@ -43,14 +43,33 @@ const [formValues, setFormValues] = useState(initialValues);
   }
 
   function getNextIndex(direction) {
+    const currIndex = formValues.index;
+    let newIndex = currIndex;
 
+    if (direction === 'left' && currIndex % 3 !== 0) {
+            newIndex = currIndex - 1;
+          } else if (direction === 'up' && currIndex >= 3) {
+                  newIndex = currIndex - 3;
+          } else if(direction === 'right' && currIndex % 3 !==2){
+            newIndex = currIndex + 1
+          } else if(direction === 'down' && currIndex <= 5){
+            newIndex = currIndex + 3
+          }
+          return newIndex
     // This helper takes a direction ("left", "up", etc) and calculates what the next index
     // of the "B" would be. If the move is impossible because we are at the edge of the grid,
     // this helper should return the current index unchanged.
   }
 
   function move(evt) {
+      const direction = evt.target.id;
 
+      const newIndex = getNextIndex(direction);
+      console.log(newIndex)
+      if(newIndex !== formValues.index){
+        let newSteps = formValues.steps + 1;
+        setFormValues({...formValues, index: newIndex, steps: newSteps})
+      }
     // This event handler can use the helper above to obtain a new index for the "B",
     // and change any states accordingly.
   }
@@ -58,23 +77,26 @@ const [formValues, setFormValues] = useState(initialValues);
   function onChange(evt) {
 
     // You will need this to update the value of the input.
+    const {id, value} = evt.target;
+    setFormValues({...formValues, [id]: value})
   }
 
   function onSubmit(evt) {
     // Use a POST request to send a payload to the server.
+    evt.preventDefault()
   }
 
   return (
     <div id="wrapper" className={props.className}>
       <div className="info">
         <h3 id="coordinates">{getXYMessage()}</h3>
-        <h3 id="steps">You moved 0 times</h3>
+        <h3 id="steps">You moved {formValues.steps}</h3>
       </div>
       <div id="grid">
         {
           [0, 1, 2, 3, 4, 5, 6, 7, 8].map(idx => (
-            <div key={idx} className={`square${idx === 4 ? ' active' : ''}`}>
-              {idx === 4 ? 'B' : null}
+            <div key={idx} className={`square${idx === formValues.index ? ' active' : ''}`}>
+              {idx === formValues.index ? 'B' : null}
             </div>
           ))
         }
@@ -83,14 +105,14 @@ const [formValues, setFormValues] = useState(initialValues);
         <h3 id="message"></h3>
       </div>
       <div id="keypad">
-        <button id="left">LEFT</button>
-        <button id="up">UP</button>
-        <button id="right">RIGHT</button>
-        <button id="down">DOWN</button>
+        <button id="left" onClick={move} >LEFT</button>
+        <button id="up" onClick={move}>UP</button>
+        <button id="right" onClick={move}>RIGHT</button>
+        <button id="down" onClick={move}>DOWN</button>
         <button onClick={reset} id="reset">reset</button>
       </div>
       <form>
-        <input id="email" type="email" placeholder="type email"></input>
+        <input id="email" type="email" placeholder="type email" onChange={onChange}></input>
         <input id="submit" type="submit"></input>
       </form>
     </div>
