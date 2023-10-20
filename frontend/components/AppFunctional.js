@@ -102,15 +102,18 @@ export default function AppFunctional(props) {
     // Use a POST request to send a payload to the server.
     evt.preventDefault()
     const { x, y } = getXY();
+    //console.log(`this is x --->${x} and this is y --->${y}`)
     const newValue = {
       x:x,
       y:y,
       steps: values.steps,
       email: values.email
     }
+    console.log(`new value = ${newValue}`)
     axios.post(URL, newValue)
     .then(res =>{
-        setValues({...values, newValue})
+        setValues({...values, message: res.data.message})
+
     }).catch(err =>{
       console.error(err.response.data.message)
       setValues({...values, message: err.response.data.message})
