@@ -1,5 +1,5 @@
 import React from 'react'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import axios from 'axios'
 import * as yup from "yup"
 // Suggested initial states
@@ -10,6 +10,9 @@ const initialEmail = ''
 const initialSteps = 0
 const initialIndex = 4// the index the "B" is at
 
+
+
+
 const initialValues = {
   message: initialMessage,
   email: initialEmail,
@@ -17,15 +20,31 @@ const initialValues = {
   index: initialIndex,
 }
 
+const left = ''
+const up = ''
+const right = ''
+const down = ''
 
+const initialErrors = {
+  left: left,
+  up: up,
+  right: right,
+  down: down,
+}
+
+// const schema = yup.object().shape({
+//   x: yup.number().integer().min(1).max(3).required(),
+//   y: yup.number().integer().min(1).max(3).required(),
+//   steps: yup.number().integer().min(1).required(),
+//   email: yup.string().email().required(),
+// });
 
 
 export default function AppFunctional(props) {
   // THE FOLLOWING HELPERS ARE JUST RECOMMENDATIONS.
   // You can delete them and build your own logic from scratch.
   const [values, setValues] = useState(initialValues)
-
-
+  const [errors, setErrors] = useState(initialErrors)
 
   function getXY() {
 
@@ -53,40 +72,52 @@ export default function AppFunctional(props) {
 
 
   function getNextIndex(direction) {
-    const currIndex = values.index;
-     let newIndex = currIndex;
+  const currIndex = values.index;
+   let newIndex = currIndex;
 
-     if (direction === 'left' && currIndex % 3 !== 0) {
-               newIndex = currIndex - 1;
-           }   if (direction === 'up' && currIndex >= 3) {
-                   newIndex = currIndex - 3;
-           }  if(direction === 'right' && currIndex % 3 !==2){
-             newIndex = currIndex + 1
-           }   if(direction === 'down' && currIndex <= 5){
-            newIndex = currIndex + 3
-          }
-          return newIndex
+   if (direction === 'left' && currIndex % 3 !== 0) {
+    newIndex = currIndex - 1;
+  } else{
+      setErrors({...errors, left: "you cant go left"})
 
-    // This helper takes a direction ("left", "up", etc) and calculates what the next index
-    // of the "B" would be. If the move is impossible because we are at the edge of the grid,
-    // this helper should return the current index unchanged.
   }
+            if (direction === 'up' && currIndex >= 3) {
+                 newIndex = currIndex - 3;
+         }  if(direction === 'right' && currIndex % 3 !==2){
+           newIndex = currIndex + 1
+         }   if(direction === 'down' && currIndex <= 5){
+          newIndex = currIndex + 3
+        }
+        return newIndex
+      }
 
-  function move(evt) {
 
-    const direction = evt.target.id;
+  // This helper takes a direction ("left", "up", etc) and calculates what the next index
+  // of the "B" would be. If the move is impossible because we are at the edge of the grid,
+  // this helper should return the current index unchanged.
 
-           const newIndex = getNextIndex(direction);
 
-           if(newIndex !== values.index){
-             let newSteps = values.steps + 1;
-            setValues({...values, index: newIndex, steps: newSteps})
+ function move(evt) {
 
-          }
+  const direction = evt.target.id;
 
-    // This event handler can use the helper above to obtain a new index for the "B",
-    // and change any states accordingly.
-  }
+         const newIndex = getNextIndex(direction);
+
+         if(newIndex !== values.index){
+           let newSteps = values.steps + 1;
+          setValues({...values, index: newIndex, steps: newSteps})
+
+        }
+
+
+}
+
+
+
+
+
+
+
 
 
 
@@ -97,6 +128,8 @@ export default function AppFunctional(props) {
     // You will need this to update the value of the input.
 
   }
+
+
 
 
   function onSubmit(evt) {
@@ -117,6 +150,7 @@ export default function AppFunctional(props) {
        // setValues({...values, email:''});
 
     }).catch(err =>{
+
       console.error(err.response.data.message)
       setValues({...values, message: err.response.data.message})
 
@@ -129,7 +163,9 @@ export default function AppFunctional(props) {
     } else{
       return `${values.steps} time`
     }
-   }
+  }
+
+
 
   return (
     <div id="wrapper" className={props.className}>
@@ -147,7 +183,7 @@ export default function AppFunctional(props) {
         }
       </div>
       <div className="info">
-        <h3 id="message">{values.message}</h3>
+        <h3 id="message">{values.message}{errors.left} </h3>
       </div>
       <div id="keypad">
         <button onClick={move} id="left"  >LEFT</button>
@@ -163,7 +199,7 @@ export default function AppFunctional(props) {
       </form>
     </div>
   )
-}
+      }
 
 
 
@@ -320,3 +356,45 @@ export default function AppFunctional(props) {
 //     </div>
 //   )
 // }
+
+
+
+
+
+// function getNextIndex(direction) {
+//   const currIndex = values.index;
+//    let newIndex = currIndex;
+
+//    if (direction === 'left' && currIndex % 3 !== 0) {
+//              newIndex = currIndex - 1;
+//          }     if (direction === 'up' && currIndex >= 3) {
+//                  newIndex = currIndex - 3;
+//          }  if(direction === 'right' && currIndex % 3 !==2){
+//            newIndex = currIndex + 1
+//          }   if(direction === 'down' && currIndex <= 5){
+//           newIndex = currIndex + 3
+//         }
+//         return newIndex
+
+//   // This helper takes a direction ("left", "up", etc) and calculates what the next index
+//   // of the "B" would be. If the move is impossible because we are at the edge of the grid,
+//   // this helper should return the current index unchanged.
+// }
+
+
+
+// function move(evt) {
+
+//   const direction = evt.target.id;
+
+//          const newIndex = getNextIndex(direction);
+
+//          if(newIndex !== values.index){
+//            let newSteps = values.steps + 1;
+//           setValues({...values, index: newIndex, steps: newSteps})
+
+//         }
+
+  // This event handler can use the helper above to obtain a new index for the "B",
+  // and change any states accordingly.
+//}
