@@ -20,16 +20,16 @@ const initialValues = {
   index: initialIndex,
 }
 
-const left = ''
-const up = ''
-const right = ''
-const down = ''
+const left=""
+const up=""
+const right=""
+const down=""
 
 const initialErrors = {
-  left: left,
-  up: up,
-  right: right,
-  down: down,
+  left:left,
+  up:up,
+  right:right,
+  down:down,
 }
 
 
