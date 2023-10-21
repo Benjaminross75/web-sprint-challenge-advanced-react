@@ -63,34 +63,11 @@ export default function AppFunctional(props) {
   function reset() {
     // Use this helper to reset all states to their initial values.
       setValues(initialValues)
-     // setErrors(initialErrors)
+
   }
 
 
-  // function getNextIndex(direction) {
-  // const currIndex = values.index;
-  //  let newIndex = currIndex;
 
-
-
-  //  if (direction === 'left' && currIndex % 3 !== 0) {
-  //   newIndex = currIndex - 1;
-  // }
-  //           if (direction === 'up' && currIndex >= 3) {
-  //                newIndex = currIndex - 3;
-  //        }  if(direction === 'right' && currIndex % 3 !==2){
-  //          newIndex = currIndex + 1
-  //        }   if(direction === 'down' && currIndex <= 5){
-  //         newIndex = currIndex + 3
-  //       }
-  //       setValues({...values, message:''});
-  //       return newIndex
-  //     }
-
-
-  // This helper takes a direction ("left", "up", etc) and calculates what the next index
-  // of the "B" would be. If the move is impossible because we are at the edge of the grid,
-  // this helper should return the current index unchanged.
 
 
 
@@ -107,6 +84,7 @@ function handleMoveError(direction) {
 
   if (direction === 'up' && currIndex >= 3) {
     newIndex = currIndex - 3;
+
   } else if (direction === 'up') {
     setValues({ ...values, message: "You can't go up" });
   }
@@ -122,7 +100,7 @@ function handleMoveError(direction) {
   } else if (direction === 'down') {
     setValues({ ...values, message: "You can't go down" });
   }
-  //setValues({...values, message:''});
+
 
   return newIndex;
 }
@@ -130,8 +108,8 @@ function handleMoveError(direction) {
 function move(evt) {
 
   const direction = evt.target.id;
-  // setErrors(initialErrors)
 
+  setValues({...values, message:''})
          const newIndex = handleMoveError(direction);
 
          if(newIndex !== values.index){
@@ -150,8 +128,8 @@ function move(evt) {
   function onChange(evt) {
     const {id, value} = evt.target;
          setValues({...values, [id]: value})
-         
-    // You will need this to update the value of the input.
+
+
 
   }
 
@@ -162,7 +140,7 @@ function move(evt) {
     // Use a POST request to send a payload to the server.
     evt.preventDefault()
     const { x, y } = getXY();
-    //console.log(`this is x --->${x} and this is y --->${y}`)
+
     const newValue = {
       x:x,
       y:y,
@@ -179,10 +157,10 @@ function move(evt) {
 
       console.error(err.response.data.message)
       setValues({...values, message: err.response.data.message})
-      //setErrors(initialErrors)
+
     })
 
-    //setErrors(initialErrors)
+
   }
    function stepValue(){
     if(values.steps > 1 || values.steps === 0){
