@@ -110,7 +110,7 @@ export default function AppFunctional(props) {
       steps: values.steps,
       email: values.email
     }
-    
+
     axios.post(URL, newValue)
     .then(res =>{
         setValues({...values, message: res.data.message, email:''})
@@ -129,7 +129,7 @@ export default function AppFunctional(props) {
     <div id="wrapper" className={props.className}>
       <div className="info">
         <h3 id="coordinates">Corrdinates {getXYMessage()}</h3>
-        <h3 id="steps">You moved {values.steps} times</h3>
+        <h3 id="steps">You moved {values.steps} time</h3>
       </div>
       <div id="grid">
         {
