@@ -68,6 +68,7 @@ export default function AppFunctional(props) {
   function reset() {
     // Use this helper to reset all states to their initial values.
       setValues(initialValues)
+      setErrors(initialErrors)
   }
 
 
@@ -75,11 +76,10 @@ export default function AppFunctional(props) {
   const currIndex = values.index;
    let newIndex = currIndex;
 
+
+
    if (direction === 'left' && currIndex % 3 !== 0) {
     newIndex = currIndex - 1;
-  } else{
-      setErrors({...errors, left: "you cant go left"})
-
   }
             if (direction === 'up' && currIndex >= 3) {
                  newIndex = currIndex - 3;
@@ -91,7 +91,36 @@ export default function AppFunctional(props) {
         return newIndex
       }
 
+      function handleMoveError(direction) {
+        const currIndex = values.index;
+        let newIndex = currIndex;
 
+        if (direction === 'left' && currIndex % 3 !== 0) {
+          newIndex = currIndex - 1;
+        } else if (direction === 'left') {
+          setErrors({ ...errors, left: "You can't go left" });
+        }
+
+        if (direction === 'up' && currIndex >= 3) {
+          newIndex = currIndex - 3;
+        } else if (direction === 'up') {
+          setErrors({ ...errors, up: "You can't go up" });
+        }
+
+        if (direction === 'right' && currIndex % 3 !== 2) {
+          newIndex = currIndex + 1;
+        } else if (direction === 'right') {
+          setErrors({ ...errors, right: "You can't go right" });
+        }
+
+        if (direction === 'down' && currIndex <= 5) {
+          newIndex = currIndex + 3;
+        } else if (direction === 'down') {
+          setErrors({ ...errors, down: "You can't go down" });
+        }
+
+        return newIndex;
+      }
   // This helper takes a direction ("left", "up", etc) and calculates what the next index
   // of the "B" would be. If the move is impossible because we are at the edge of the grid,
   // this helper should return the current index unchanged.
@@ -101,12 +130,12 @@ export default function AppFunctional(props) {
 
   const direction = evt.target.id;
 
-         const newIndex = getNextIndex(direction);
+         const newIndex = handleMoveError(direction);
 
          if(newIndex !== values.index){
            let newSteps = values.steps + 1;
           setValues({...values, index: newIndex, steps: newSteps})
-
+          setErrors(initialErrors)
         }
 
 
@@ -183,7 +212,7 @@ export default function AppFunctional(props) {
         }
       </div>
       <div className="info">
-        <h3 id="message">{values.message}{errors.left} </h3>
+        <h3 id="message">{values.message}{errors.left}{errors.right} {errors.up}{errors.down} </h3>
       </div>
       <div id="keypad">
         <button onClick={move} id="left"  >LEFT</button>
