@@ -94,31 +94,31 @@ export default function AppFunctional(props) {
       function handleMoveError(direction) {
         const currIndex = values.index;
         let newIndex = currIndex;
-        let errorMessages = {...errors}
+
         if (direction === 'left' && currIndex % 3 !== 0) {
           newIndex = currIndex - 1;
         } else if (direction === 'left') {
-          errorMessages.left = "You can't go left";
+          setErrors({ ...errors, left: "You can't go left" });
         }
 
         if (direction === 'up' && currIndex >= 3) {
           newIndex = currIndex - 3;
         } else if (direction === 'up') {
-          errorMessages.up = "You can't go up";
+          setErrors({ ...errors, up: "You can't go up" });
         }
 
         if (direction === 'right' && currIndex % 3 !== 2) {
           newIndex = currIndex + 1;
         } else if (direction === 'right') {
-          errorMessages.right = "You can't go right";
+          setErrors({ ...errors, right: "You can't go right" });
         }
 
         if (direction === 'down' && currIndex <= 5) {
           newIndex = currIndex + 3;
         } else if (direction === 'down') {
-          errorMessages.down = "You can't go down";
+          setErrors({ ...errors, down: "You can't go down" });
         }
-        setErrors(errorMessages)
+        setValues({...values, message:''});
         return newIndex;
       }
   // This helper takes a direction ("left", "up", etc) and calculates what the next index
@@ -176,7 +176,7 @@ export default function AppFunctional(props) {
     axios.post(URL, newValue)
     .then(res =>{
         setValues({...values, message: res.data.message, email:''})
-       // setValues({...values, email:''});
+
 
     }).catch(err =>{
 
@@ -185,6 +185,7 @@ export default function AppFunctional(props) {
 
     })
 
+    setErrors(initialErrors)
   }
    function stepValue(){
     if(values.steps > 1 || values.steps === 0){
