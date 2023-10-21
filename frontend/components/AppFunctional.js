@@ -123,13 +123,19 @@ export default function AppFunctional(props) {
     })
 
   }
-
+   function stepValue(){
+    if(values.steps > 1){
+      return `${values.steps} times`
+    } else{
+      return `${values.steps} time`
+    }
+   }
 
   return (
     <div id="wrapper" className={props.className}>
       <div className="info">
         <h3 id="coordinates">Corrdinates {getXYMessage()}</h3>
-        <h3 id="steps">You moved {values.steps} time</h3>
+        <h3 id="steps">You moved {stepValue()}</h3>
       </div>
       <div id="grid">
         {
