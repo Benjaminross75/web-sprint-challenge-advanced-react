@@ -124,7 +124,7 @@ export default function AppFunctional(props) {
 
   }
    function stepValue(){
-    if(values.steps > 1){
+    if(values.steps > 1 || values.steps === 0){
       return `${values.steps} times`
     } else{
       return `${values.steps} time`
