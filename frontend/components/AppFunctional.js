@@ -93,6 +93,7 @@ export default function AppFunctional(props) {
   function onChange(evt) {
     const {id, value} = evt.target;
          setValues({...values, [id]: value})
+
     // You will need this to update the value of the input.
 
   }
@@ -109,15 +110,18 @@ export default function AppFunctional(props) {
       steps: values.steps,
       email: values.email
     }
-    console.log(`new value = ${newValue}`)
+    
     axios.post(URL, newValue)
     .then(res =>{
-        setValues({...values, message: res.data.message})
+        setValues({...values, message: res.data.message, email:''})
+       // setValues({...values, email:''});
 
     }).catch(err =>{
       console.error(err.response.data.message)
       setValues({...values, message: err.response.data.message})
+
     })
+
   }
 
 
@@ -125,7 +129,7 @@ export default function AppFunctional(props) {
     <div id="wrapper" className={props.className}>
       <div className="info">
         <h3 id="coordinates">Corrdinates {getXYMessage()}</h3>
-        <h3 id="steps">You moved {values.steps} time</h3>
+        <h3 id="steps">You moved {values.steps} times</h3>
       </div>
       <div id="grid">
         {
@@ -148,7 +152,7 @@ export default function AppFunctional(props) {
       </div>
       <form onSubmit={onSubmit}>
 
-        <input id="email" type="email" placeholder="type email" onChange={onChange} ></input>
+        <input id="email" type="email" placeholder="type email" onChange={onChange} value={values.email} ></input>
         <input id="submit" type="submit"></input>
       </form>
     </div>
