@@ -44,19 +44,63 @@ constructor(){
     // Use this helper to reset all states to their initial values.
   }
 
-  getNextIndex = (direction) => {
-    // This helper takes a direction ("left", "up", etc) and calculates what the next index
-    // of the "B" would be. If the move is impossible because we are at the edge of the grid,
-    // this helper should return the current index unchanged.
-  }
+  // getNextIndex = (direction) => {
+  //   // This helper takes a direction ("left", "up", etc) and calculates what the next index
+  //   // of the "B" would be. If the move is impossible because we are at the edge of the grid,
+  //   // this helper should return the current index unchanged.
+  // }
+   handleMoveError = (direction) => {
+    const currIndex = this.state.values.index;
+    let newIndex = currIndex;
 
+    if (direction === 'left' && currIndex % 3 !== 0) {
+      newIndex = currIndex - 1;
+    } else if (direction === 'left') {
+      this.setState({ values: { ...this.state.values, message: "You can't go left" } });
+    }
+
+    if (direction === 'up' && currIndex >= 3) {
+      newIndex = currIndex - 3;
+
+    } else if (direction === 'up') {
+      this.setState({ values: { ...this.state.values, message: "You can't go up" } });
+    }
+
+    if (direction === 'right' && currIndex % 3 !== 2) {
+      newIndex = currIndex + 1;
+    } else if (direction === 'right') {
+      this.setState({ values: { ...this.state.values, message: "You can't go right" } });
+    }
+
+    if (direction === 'down' && currIndex <= 5) {
+      newIndex = currIndex + 3;
+    } else if (direction === 'down') {
+      this.setState({ values: { ...this.state.values, message: "You can't go down" } });
+    }
+
+
+    return newIndex;
+  }
   move = (evt) => {
     // This event handler can use the helper above to obtain a new index for the "B",
     // and change any states accordingly.
-  }
+    const direction = evt.target.id;
+
+    this.setState({ values: { ...this.state.values, message: "" } });
+           const newIndex = this.handleMoveError(direction);
+
+           if(newIndex !== this.state.values.index){
+             let newSteps = this.state.values.steps + 1;
+             this.setState({ values: { ...this.state.values, index: newIndex, steps: newSteps } });
+    }
+
+          }
+
 
   onChange = (evt) => {
     // You will need this to update the value of the input.
+    const {id, value} = evt.target;
+    this.setState({ values: { ...this.state.values, [id]: value } });
   }
 
   onSubmit = (evt) => {
@@ -68,14 +112,14 @@ constructor(){
     return (
       <div id="wrapper" className={className}>
         <div className="info">
-          <h3 id="coordinates">Coordinates (2, 2)</h3>
+          <h3 id="coordinates">Coordinates {this.getXYMessage()}</h3>
           <h3 id="steps">You moved 0 times</h3>
         </div>
         <div id="grid">
           {
             [0, 1, 2, 3, 4, 5, 6, 7, 8].map(idx => (
-              <div key={idx} className={`square${idx === 4 ? ' active' : ''}`}>
-                {idx === 4 ? 'B' : null}
+              <div key={idx} className={`square${idx === this.state.values.index ? ' active' : ''}`}>
+                {idx === this.state.values.index ? 'B' : null}
               </div>
             ))
           }
@@ -84,11 +128,11 @@ constructor(){
           <h3 id="message"></h3>
         </div>
         <div id="keypad">
-          <button id="left">LEFT</button>
-          <button id="up">UP</button>
-          <button id="right">RIGHT</button>
-          <button id="down">DOWN</button>
-          <button id="reset">reset</button>
+          <button onClick={this.move} id="left">LEFT</button>
+          <button onClick={this.move}id="up">UP</button>
+          <button onClick={this.move}id="right">RIGHT</button>
+          <button onClick={this.move}id="down">DOWN</button>
+          <button onClick={this.reset}id="reset">reset</button>
         </div>
         <form>
           <input id="email" type="email" placeholder="type email"></input>
