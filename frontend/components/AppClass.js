@@ -1,5 +1,6 @@
 import React from 'react'
-
+import {useState} from 'react'
+import axios from 'axios'
 // Suggested initial states
 const initialMessage = ''
 const initialEmail = ''
@@ -16,19 +17,30 @@ const initialState = {
 export default class AppClass extends React.Component {
   // THE FOLLOWING HELPERS ARE JUST RECOMMENDATIONS.
   // You can delete them and build your own logic from scratch.
-
+constructor(){
+  super()
+  this.state = {
+    values: initialState
+  }
+}
   getXY = () => {
-    // It it not necessary to have a state to track the coordinates.
-    // It's enough to know what index the "B" is at, to be able to calculate them.
+    const x = (this.state.values.index % 3) + 1;
+         const y = Math.floor(this.state.values.index / 3) +1;
+
+         return { x, y };
   }
 
   getXYMessage = () => {
     // It it not necessary to have a state to track the "Coordinates (2, 2)" message for the user.
     // You can use the `getXY` helper above to obtain the coordinates, and then `getXYMessage`
     // returns the fully constructed string.
+    const {x,y} = this.getXY();
+    console.log(`this is x --->${x}`)
+        return `Coordinates (${x}, ${y})`
   }
 
   reset = () => {
+    this.setState({values: initialState});
     // Use this helper to reset all states to their initial values.
   }
 

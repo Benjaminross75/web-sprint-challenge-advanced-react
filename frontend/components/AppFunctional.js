@@ -45,7 +45,7 @@ export default function AppFunctional(props) {
 
     const x = (values.index % 3) + 1;
          const y = Math.floor(values.index / 3) +1;
-         console.log(x)
+        
          return { x, y };
     // It it not necessary to have a state to track the coordinates.
     // It's enough to know what index the "B" is at, to be able to calculate them.
@@ -211,7 +211,7 @@ function move(evt) {
 
 
 
-
+//<Route path="/" element={<AppFunctional className="functional" />} />
 
 
 
