@@ -98,25 +98,25 @@ export default function AppFunctional(props) {
         if (direction === 'left' && currIndex % 3 !== 0) {
           newIndex = currIndex - 1;
         } else if (direction === 'left') {
-          setErrors({ ...errors, left: "You can't go left" });
+          setErrors({ ...errors, left: "You can't go left".trim() });
         }
 
         if (direction === 'up' && currIndex >= 3) {
           newIndex = currIndex - 3;
         } else if (direction === 'up') {
-          setErrors({ ...errors, up: "You can't go up" });
+          setErrors({ ...errors, up: "You can't go up".trim() });
         }
 
         if (direction === 'right' && currIndex % 3 !== 2) {
           newIndex = currIndex + 1;
         } else if (direction === 'right') {
-          setErrors({ ...errors, right: "You can't go right" });
+          setErrors({ ...errors, right: "You can't go right".trim() });
         }
 
         if (direction === 'down' && currIndex <= 5) {
           newIndex = currIndex + 3;
         } else if (direction === 'down') {
-          setErrors({ ...errors, down: "You can't go down" });
+          setErrors({ ...errors, down: "You can't go down".trim() });
         }
 
         return newIndex;
