@@ -1,6 +1,9 @@
 import React from 'react'
 import {useState} from 'react'
 import axios from 'axios'
+
+
+const URL = 'http://localhost:9000/api/result'
 // Suggested initial states
 const initialMessage = ''
 const initialEmail = ''
@@ -104,16 +107,45 @@ constructor(){
   }
 
   onSubmit = (evt) => {
+    evt.preventDefault()
+    const { x, y } = this.getXY();
+
+    const newValue = {
+      x:x,
+      y:y,
+      steps: this.state.values.steps,
+      email: this.state.values.email,
+    }
+
+    axios.post(URL, newValue)
+    .then(res =>{
+        this.setState({ values: {...this.state.values, message: res.data.message, email:''}})
+
+
+    }).catch(err =>{
+
+      console.error(err.response.data.message)
+      this.setState({values:{...this.state.values, message: err.response.data.message}})
+
+    })
     // Use a POST request to send a payload to the server.
+
   }
 
+   stepValue(){
+    if(this.state.values.steps > 1 || this.state.values.steps === 0){
+      return `${this.state.values.steps} times`
+    } else{
+      return `${this.state.values.steps} time`
+    }
+  }
   render() {
     const { className } = this.props
     return (
       <div id="wrapper" className={className}>
         <div className="info">
           <h3 id="coordinates">Coordinates {this.getXYMessage()}</h3>
-          <h3 id="steps">You moved 0 times</h3>
+          <h3 id="steps">You moved {this.stepValue()}</h3>
         </div>
         <div id="grid">
           {
@@ -125,7 +157,7 @@ constructor(){
           }
         </div>
         <div className="info">
-          <h3 id="message"></h3>
+          <h3 id="message">{this.state.values.message}</h3>
         </div>
         <div id="keypad">
           <button onClick={this.move} id="left">LEFT</button>
@@ -134,8 +166,8 @@ constructor(){
           <button onClick={this.move}id="down">DOWN</button>
           <button onClick={this.reset}id="reset">reset</button>
         </div>
-        <form>
-          <input id="email" type="email" placeholder="type email"></input>
+        <form onSubmit={this.onSubmit}>
+          <input id="email" type="email" placeholder="type email" onChange={this.onChange}></input>
           <input id="submit" type="submit"></input>
         </form>
       </div>
