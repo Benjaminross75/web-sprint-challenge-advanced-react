@@ -119,8 +119,8 @@ constructor(){
 
     axios.post(URL, newValue)
     .then(res =>{
-        this.setState({ values: {...this.state.values, message: res.data.message, email:''}})
-
+       // this.setState((prevState)=>({ values: {...prevState.values, message: res.data.message, email:''}}))
+       this.setState({ values: {...this.state.values, message: res.data.message, email:''}})
 
     }).catch(err =>{
 
@@ -167,10 +167,41 @@ constructor(){
           <button onClick={this.reset}id="reset">reset</button>
         </div>
         <form onSubmit={this.onSubmit}>
-          <input id="email" type="email" placeholder="type email" onChange={this.onChange}></input>
+          <input id="email" type="email" placeholder="type email" onChange={this.onChange} value={this.state.values.email}></input>
           <input id="submit" type="submit"></input>
         </form>
       </div>
     )
   }
 }
+
+
+
+
+
+
+// onSubmit = (evt) => {
+//   evt.preventDefault()
+//   const { x, y } = this.getXY();
+
+//   const newValue = {
+//     x:x,
+//     y:y,
+//     steps: this.state.values.steps,
+//     email: this.state.values.email,
+//   }
+
+//   axios.post(URL, newValue)
+//   .then(res =>{
+//       this.setState({ values: {...this.state.values, message: res.data.message, email:''}})
+
+
+//   }).catch(err =>{
+
+//     console.error(err.response.data.message)
+//     this.setState({values:{...this.state.values, message: err.response.data.message}})
+
+//   })
+//   // Use a POST request to send a payload to the server.
+
+// }
